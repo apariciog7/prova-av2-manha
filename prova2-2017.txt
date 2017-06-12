@@ -1,0 +1,96 @@
+Unilasalle-RJ - AV2
+Aluno: (Gabriel Aparício Pereira da Silva)
+Prova Av2 de Laboratorio de Sistemas Operacionais
+Professor: Alex Salgado
+1o. Semestre de 2017   Turno: MANHÃ
+--------------------------------------------------
+1-Faça um script shell que:
+- Pergunte por um nome e crie uma pasta e um arquivo.txt com o mesmo nome inserido.
+
+2-Quantos erros tem no script abaixo? Qual(is) são eles?
+case "$file" in
+    *.txt}
+        echo "É um arquivo de texto."
+        cat "$file"
+        
+    *.gif|*.jpg|*.png}
+        echo "É uma figura."
+        xloadimage "$file"
+        
+    *}
+        echo "Não sei que arquivo é esse."
+        
+esac
+
+3-Usando estrutura de repetição, faça um script para exibir todos os arquivos
+da pasta atual com tamanho maior que 500kb.
+
+4-Usando estrutura de repetição, faça um script para calcular e exibir quantas
+pastas e quantos arquivos tem na pasta atual.
+
+5-Faça um script que leia um numero IP e retorna se endereço responde ou não ao 
+comando ping.
+Além disso, se for digitado um ip vazio, o script deve informar ao usuario.
+
+Respostas aqui:
+1-
+#!/bin/bash
+echo "insira um nome para criar uma pasta"
+read nome
+mkdir $nome
+touch $nome.txt
+
+2-
+
+o script possui dois tipos de erro:
+não possui as condições do case, "X)"
+nem as terminações de cada opção, ";;"
+
+3-
+for arquivo in *.*
+do
+  tamanho=$(wc -c <"$arquivo")
+  tamanho_minimo=500000
+  if [ $tamanho -ge $tamanho_minimo ]; then
+    echo $arquivo
+  fi
+done
+
+4-
+#!/bin/bash
+ DIR='.'
+
+
+NUMARQ=0
+NUMDIR=0
+lista(){
+for ARQ in $( ls $1/ )
+  do
+  [ -d "$1/$ARQ" ] && { NUMDIR=$(($NUMDIR+1)); lista $1/$ARQ; }
+  [ -f "$1/$ARQ" ] && NUMARQ=$(($NUMARQ+1))
+done
+}
+lista $DIR
+echo "Existem $NUMARQ arquivos e $NUMDIR diretorios em '$DIR'."
+
+
+5-
+#!/bin/bash
+echo "informe a url: "	
+	read url
+	if [ -z $url ]; then
+		echo "URL vazia"
+	else 
+		ping -q -c 5 $url
+		if [ $? -eq 0 ]; then
+		
+			echo "a URL $URL está no ar"
+			echo " "
+			echo " "
+	
+		else
+			echo "a URL $URL não está no ar"
+			echo " "
+			echo " "
+		fi
+	fi
